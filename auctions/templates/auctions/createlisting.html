@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<form action="{% url 'createlisting' %}" method="post">
+    {% csrf_token %}
+    <h2>Create a New Listing</h2>
+    <div>
+    <label for="id_pagetitle" style="margin-top: 50px; display:block;">Item Title:</label>
+    <input type="text" name="pagetitle" required="true" id="id_pagetitle">
+    <label for="id_pagecontent" style="display:block; margin-top: 20px;">Item Description:</label>
+    <textarea id="id_pagecontent" name="pagecontent" rows="4" cols="50" style="display: block;"></textarea>
+    <label for="bidprice" style="display:block; margin-top: 20px;">Bid Starting Price:</label>
+    <div><input type="text" name="bidprice" required="true" id="bidprice"></div>
+    <label for="imgsrc" style="display:block; margin-top: 20px;">Image Source:</label>
+    <div><input type="text" name="imgsrc" id="imgsrc"></div>
+    <input type="submit" id="addpage" style="margin-right: 200px; margin-top: 40px;" value="Create Listing">
+    </div>
+</form>
+{% endblock %}

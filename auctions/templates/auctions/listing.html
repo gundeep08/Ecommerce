@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<form action="{% url 'listing' list.title %}" method="post">
+    {% csrf_token %}
+    <h2>Listing: {{list.title}}</h2>
+        <div>Description: {{ list.description }}<div>
+            {% for bid in bids %} 
+                {% if bid.auction.id == list.id%}
+                    <div>Price: {{ bid.bidPrice }}</div>
+                {% endif %}
+            {% endfor %}
+            {% if list.image %} 
+                <div><img style="margin-left: 10px;  width: 10%; border: 1px solid grey;" src="{{ list.image.url }}"/></div>
+            {% endif %}
+            {% if not isListingValid %}
+            {% for bid in bids %} 
+                {% if bid.auction.id == list.id %}
+                    {% if bid.highestBidder == username %}
+                        <h4>Congratulations, you have won the auction!!!!</h4>
+                    {% else %}
+                        <h4>Sorry, Listing is closed and no more available for bidding. </h4>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% else %}
+            {% if addtowishlist %}
+                <a href="{% url 'addToWatchlist' list.title %}"> Add to watchlist </a>
+            {% else %}
+                <a href="{% url 'removeFromWatchlist' list.title %}"> Remove from watchlist </a>
+            {% endif %}
+        <div>
+            <textarea id="comment" name="comment" rows="4" cols="50" style="display: block; margin-top: 20px;"></textarea>
+            <input type="submit" id="addComment" style="margin-top: 20px; margin-bottom: 20px; display: block;" value="Add Comment">
+            <input type="text" name="bidprice" id="bidprice" style="margin-top: 50px;display: block;">
+            <input type="submit" id="addpage" style="margin-right: 200px; margin-top: 20px; margin-bottom: 20px;" value="Place Bid">
+        </div>
+
+      <div>
+        {% if closeListing %}
+        <a href="{% url 'closeListing' list.id %}"> Close Listing</a>
+    {% endif %}
+    </div>
+    {% endif %}
+</form>
+
+<h4><b>Comments</b></h4>
+{% for commentObj in comments %} 
+    {% if list.id == commentObj.auction.id%}
+        <span style="float:left; display: block;">{{ commentObj.comment }}</span><br/>
+    {% endif %}
+{% endfor %}
+
+{% endblock %}

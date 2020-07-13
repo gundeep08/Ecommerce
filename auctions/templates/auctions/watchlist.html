@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>My Watchlist</h2>
+        {% for items in auction %}
+                {% for watchlistitem in watchlist %}
+                    {% if items.id == watchlistitem.auction.id%}
+                            <div style="display: inline; float:left;"> 
+                                <span style="float:right; display: block; margin-left: 100px;"><img style="margin-left: 10px;  width: 20%; border: 1px solid grey;" src="{{ items.image.url }}"/></span>
+                                {% for bid in bids %} 
+                                    {% if bid.auction.id == items.id%}
+                                        <span style="float:right; display: block; margin-left: 100px;">BidPrice: {{bid.bidPrice}}</span>
+                                    {% endif %}
+                                {% endfor %}
+                                <span style="float:right; display: block; margin-left: 100px;">Description: {{ items.description }}</span> 
+                                <span style="float:right; display: block; margin-left: 100px;"><a href="{% url 'listing'  items.title %}">
+                                    {{ items.title }} 
+                               </a></span>
+                            </div>
+                    {% endif %}
+                {% endfor %}
+        {% endfor %}
+    
+{% endblock %}
